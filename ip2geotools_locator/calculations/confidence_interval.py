@@ -1,0 +1,2 @@
+class ConfidenceInterval():
+    pass

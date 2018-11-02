@@ -1,0 +1,2 @@
+class Median():
+    pass

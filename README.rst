@@ -3,11 +3,11 @@ ip2geotools-locator
 ===================
 
 
-.. image:: https://img.shields.io/pypi/v/ip2geotools_locator.svg
-        :target: https://pypi.python.org/pypi/ip2geotools_locator
+.. image:: https://img.shields.io/pypi/v/ip2geotools-locator.svg
+        :target: https://pypi.python.org/pypi/ip2geotools-locator
 
-.. image:: https://img.shields.io/travis/Ionicson/ip2geotools_locator.svg
-        :target: https://travis-ci.org/Ionicson/ip2geotools_locator
+.. image:: https://img.shields.io/travis/Ionicson/ip2geotools-locator.svg
+        :target: https://travis-ci.org/Ionicson/ip2geotools-locator
 
 .. image:: https://readthedocs.org/projects/ip2geotools-locator/badge/?version=latest
         :target: https://ip2geotools-locator.readthedocs.io/en/latest/?badge=latest

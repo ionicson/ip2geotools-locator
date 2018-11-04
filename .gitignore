@@ -102,3 +102,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Other files
+locations.html
+scr.py
+pip-selfcheck.json

@@ -17,31 +17,31 @@ class IpCityDB:
     def get_location(self, ip):
         try:
             self.__db_data = DbIpCity.get(ip)
-            if self.__db_data.latitude != None & self.__db_data.longitude != None:
-                loc = Location(self.__db_data.latitude, self.__db_data.longitude)
+            
+            loc = Location(self.__db_data.latitude, self.__db_data.longitude)
 
             return loc
        
         except IpAddressNotFoundError as e:
-            print(e)
+            print(__name__ + ": " + str(e)) 
         
         except PermissionRequiredError as e:
-            print(e)
+            print(__name__ + ": " + str(e)) 
 
         except ServiceError as e:
-            print(e)
+            print(__name__ + ": " + str(e)) 
         
         except LimitExceededError as e:
-            print(e)    
+            print(__name__ + ": " + str(e))     
 
         except (LocationError, InvalidRequestError, InvalidResponseError) as e:
-            print(e)
+            print(__name__ + ": " + str(e)) 
 
-        except TypeError:
-            pass     
+        except TypeError as e:
+            print(__name__ + ": " + str(e))      
 
     def add_to_map(self):
         try:
             self.m.add_marker_noncommercial(DbIpCity.__name__, self.__db_data.ip_address, self.__db_data.country, self.__db_data.city, self.__db_data.latitude, self.__db_data.longitude)
-        except AttributeError:
-            pass
+        except AttributeError as e:
+            print(__name__ + ": " + str(e)) 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 
-from ip2geotools_locator.database_connectors import HostIpDB, IpCityDB
+from ip2geotools_locator.database_connectors import HostIpDB, IpCityDB, Ip2LocationDB, IpstackDB, MaxMindLiteDB
 from ip2geotools_locator.calculations import Average
 from ip2geotools_locator.folium_map import FoliumMap
 
@@ -17,8 +17,9 @@ class Locator:
             self.settings = json.load(read_file)
         
     def get_locations(self, ip):
-        self.ip_address = ip
         
+        self.ip_address = ip
+
         if self.settings["noncommercial"]["host_ip"]["active"]:
             
             host_ip = HostIpDB()
@@ -26,6 +27,7 @@ class Locator:
             
             if self.settings["noncommercial"]["host_ip"]["generate_marker"]:
                 host_ip.add_to_map()
+
 
         if self.settings["noncommercial"]["ip_city"]["active"]:
             
@@ -35,6 +37,33 @@ class Locator:
             if self.settings["noncommercial"]["ip_city"]["generate_marker"]:
                 ip_city.add_to_map()
 
+
+        if self.settings["noncommercial"]["ip2location"]["active"]:
+            
+            ip2location = Ip2LocationDB(self.settings["noncommercial"]["ip2location"]["db_file"])
+            self.locations.append(ip2location.get_location(ip))
+            
+            if self.settings["noncommercial"]["ip2location"]["generate_marker"]:
+                ip2location.add_to_map()
+
+
+        if self.settings["noncommercial"]["ipstack"]["active"]:
+            
+            ipstack = IpstackDB(self.settings["noncommercial"]["ipstack"]["api_key"])
+            self.locations.append(ipstack.get_location(ip))
+            
+            if self.settings["noncommercial"]["ipstack"]["generate_marker"]:
+                ipstack.add_to_map()
+
+
+        if self.settings["noncommercial"]["max_mind_lite"]["active"]:
+            
+            max_mind_lite = MaxMindLiteDB(self.settings["noncommercial"]["max_mind_lite"]["db_file"])
+            self.locations.append(max_mind_lite.get_location(ip))
+            
+            if self.settings["noncommercial"]["max_mind_lite"]["generate_marker"]:
+                max_mind_lite.add_to_map()
+
     def calculate(self):
                 
         location = Average.calculate(self.locations)
@@ -43,7 +72,4 @@ class Locator:
         map.add_calculated_marker("Average", self.ip_address, location[0], location[1])
         map.generate_map(location)
 
-        if location[0] == None or location[1] == None:
-            return ("Location for IP address %s could not be calculated!" % self.ip_address)
-        else:
-            return location
+        return location

@@ -11,11 +11,11 @@ class Average():
                 __latitude += loc.latitude
                 __longitude += loc.longitude
                 __items += 1
-            except AttributeError:
-                pass
+            except AttributeError as e:
+                print(e)
 
         try:
             return __latitude / __items, __longitude / __items
-        except ZeroDivisionError:
-            return None, None
+        except ZeroDivisionError as e:
+            print(e)
     

@@ -27,32 +27,32 @@ class MaxMindLiteDB:
         """
         try:
             # Try to get and return location
-            self.__db_data = MaxMindGeoLite2City.get(ip)
+            self.__db_data = MaxMindGeoLite2City.get(ip, None, self.__file_path)
             return Location(self.__db_data.latitude, self.__db_data.longitude)
        
         except IpAddressNotFoundError as e:
             # Handling for IpAddressNotFoundError exception
-            print("Module %s returned %s with message: %s" % __name__, str(e.__class__), str(e)) 
+            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
         
         except PermissionRequiredError as e:
             # Handling for PermissionRequiredError exception
-            print("Module %s returned %s with message: %s" % __name__, str(e.__class__), str(e))
+            print("Module %s returned %s " % (__name__, str(e.with_traceback)))
 
         except ServiceError as e:
             # Handling for ServiceError exception
-            print("Module %s returned %s with message: %s" % __name__, str(e.__class__), str(e)) 
+            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
         
         except LimitExceededError as e:
             # Handling for LimitExceededError exception
-            print("Module %s returned %s with message: %s" % __name__, str(e.__class__), str(e))     
+            print("Module %s returned %s " % (__name__, str(e.with_traceback)))     
 
         except (LocationError, InvalidRequestError, InvalidResponseError) as e:
             # Handling for invalid data, request and response exception
-            print("Module %s returned %s with message: %s" % __name__, str(e.__class__), str(e)) 
+            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
 
         except TypeError as e:
             # Handling for TypeError exception (in case of database returning None values)
-            print("Module %s returned %s with message: %s" % __name__, str(e.__class__), str(e))     
+            print("Module %s returned %s " % (__name__, str(e.with_traceback)))     
         
     def add_to_map(self):
         """

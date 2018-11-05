@@ -105,6 +105,7 @@ ENV/
 
 # Other files
 locations.html
-scr.py
 pip-selfcheck.json
+scr.py
+settings.json
 data

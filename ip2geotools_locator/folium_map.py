@@ -44,7 +44,7 @@ class FoliumMap:
     def generate_map(cls, center_location=[], file_name="locations"):
         
         try:
-            map = folium.Map(location = center_location)
+            map = folium.Map([center_location.latitude, center_location.longitude])
 
             for marker in cls.markers:
                 marker.add_to(map)

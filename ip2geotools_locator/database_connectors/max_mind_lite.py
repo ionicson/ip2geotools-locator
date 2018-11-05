@@ -22,7 +22,7 @@ class MaxMindLiteDB:
 
     def get_location(self, ip):
         """
-        Rethrieves location for given IP address from MaxMindGeoLite2City database
+        Retrieves location for given IP address from MaxMindGeoLite2City database
         Validation and exception handling included.
         """
         try:

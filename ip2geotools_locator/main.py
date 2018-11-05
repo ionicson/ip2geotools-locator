@@ -9,6 +9,7 @@ This module contains whole application logic
 import json
 
 from ip2geotools_locator.database_connectors import HostIpDB, IpCityDB, Ip2LocationDB, IpstackDB, MaxMindLiteDB
+from ip2geotools_locator.database_connectors import GeobytesCityDB, IpInfoDB, MaxMindDB
 from ip2geotools_locator.calculations import Average, Clustering
 from ip2geotools_locator.folium_map import FoliumMap
 
@@ -16,7 +17,8 @@ class Locator:
     """
     This class manages settings, Database connections and Calculations
     """
-    
+    generate_map = True
+
     ip_address = None
     settings = None
     locations = []
@@ -69,7 +71,7 @@ class Locator:
             if self.settings["noncommercial"]["ip2location"]["generate_marker"]:
                 ip2location.add_to_map()
 
-        #Json settings parsed for HostIP database
+        #Json settings parsed for Ipstack database
         if self.settings["noncommercial"]["ipstack"]["active"]:
             
             ipstack = IpstackDB(self.settings["noncommercial"]["ipstack"]["api_key"])
@@ -86,6 +88,34 @@ class Locator:
             
             if self.settings["noncommercial"]["max_mind_lite"]["generate_marker"]:
                 max_mind_lite.add_to_map()
+
+        # Commercial Databases
+        # Json settings parsed for IP Info database
+        if self.settings["commercial"]["ip_info"]["active"]:
+            
+            ip_info = IpInfoDB(self.settings["commercial"]["ip_info"]["api_key"])
+            self.locations.append(ip_info.get_location(ip))
+            
+            if self.settings["commercial"]["ip_info"]["generate_marker"]:
+                ip_info.add_to_map()
+        
+        # Json settings parsed for GeobytesCityDetails database
+        if self.settings["commercial"]["geobytes_city"]["active"]:
+            
+            geobytes_city = GeobytesCityDB()
+            self.locations.append(geobytes_city.get_location(ip))
+            
+            if self.settings["commercial"]["geobytes_city"]["generate_marker"]:
+                geobytes_city.add_to_map()
+        
+        # Json settings parsed for MaxMindGeoIp2City database
+        if self.settings["commercial"]["max_mind"]["active"]:
+            
+            max_mind = MaxMindDB()
+            self.locations.append(max_mind.get_location(ip))
+            
+            if self.settings["commercial"]["max_mind"]["generate_marker"]:
+                max_mind.add_to_map()
 
     def calculate(self, average = True, clustering = False, interval = False, median = False):
         """
@@ -118,7 +148,6 @@ class Locator:
             pass
 
         #Generate map file
-        if self.generate_map:
-            map.generate_map(location[0])
+        map.generate_map(location)
     
         return calculated_locations

@@ -5,3 +5,5 @@
 __author__ = """Oldřich Klíma"""
 __email__ = 'xklima27@vutbr.cz'
 __version__ = '0.2.0'
+
+from ip2geotools_locator.main import Locator

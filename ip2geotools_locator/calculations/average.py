@@ -9,6 +9,12 @@ class Average():
     """
     @staticmethod
     def calculate(locations = []):
+        """
+        Static method calculates Average of given location list.
+        Locations list must be in form of namedtuple and is also returned like that:
+        
+        Location = namedtuple('Location', 'latitude longitude')
+        """
         __latitude  = 0.0
         __longitude = 0.0
         #Tracking of calculable locations
@@ -21,12 +27,12 @@ class Average():
                 __longitude += loc.longitude
                 __items += 1
             except AttributeError as e:
-                print(e)
+                print("Module " + __name__ + " has skipped wrong value due to: " + e.with_traceback)
 
         try:
             #Calculate Average and return as Location
             return Location(__latitude / __items, __longitude / __items)
         except ZeroDivisionError as e:
             #If None locations were provided
-            print(e)
+            print("Calculation of Average canceled due to " + e)
     

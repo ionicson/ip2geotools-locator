@@ -18,6 +18,8 @@ class MaxMindLiteDB:
     
     def __init__(self, file_path):
         #This database needs DB file to read data
+        if file_path == None:
+            raise PermissionRequiredError("Database %s needs DB file!" % MaxMindGeoLite2City.__name__)
         self.__file_path = file_path       
 
     def get_location(self, ip):

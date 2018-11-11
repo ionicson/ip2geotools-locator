@@ -18,6 +18,8 @@ class IpstackDB:
     
     def __init__(self, api_key):
         # Ipstack database needs API key to read values
+        if api_key == None:
+            raise PermissionRequiredError("Database %s needs API key to work!" % ipstack.__name__)
         self.__api_key = api_key        
 
     def get_location(self, ip):

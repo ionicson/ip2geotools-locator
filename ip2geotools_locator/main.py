@@ -7,11 +7,14 @@ This module contains whole application logic
 
 """
 import json
+from collections import namedtuple
 
 from ip2geotools_locator.database_connectors import HostIpDB, IpCityDB, Ip2LocationDB, IpstackDB, MaxMindLiteDB
-from ip2geotools_locator.database_connectors import GeobytesCityDB, IpInfoDB, MaxMindDB
+from ip2geotools_locator.database_connectors import EurekDB, GeobytesCityDB, IpInfoDB, IpWebDB, Ip2locationWebDB, MaxMindDB, NeustarWebDB, SkyhookDB
 from ip2geotools_locator.calculations import Average, Clustering, Median
 from ip2geotools_locator.folium_map import FoliumMap
+
+Location = namedtuple('Location', 'type latitude longitude')
 
 class Locator:
     """
@@ -68,6 +71,7 @@ class Locator:
                 elif i in self.commercial:
                     self.commercial[i]["active"] = True
 
+
         # Noncommercial databases
         # Json settings parsed for HostIP database
         if self.noncommercial["host_ip"]["active"]:
@@ -80,6 +84,7 @@ class Locator:
             if self.noncommercial["host_ip"]["generate_marker"]:
                 host_ip.add_to_map()
 
+
         # Json settings parsed for DbIpCity database
         if self.noncommercial["ip_city"]["active"]:
             
@@ -88,6 +93,7 @@ class Locator:
             
             if self.noncommercial["ip_city"]["generate_marker"]:
                 ip_city.add_to_map()
+
 
         # Json settings parsed for Ip2location database
         if self.noncommercial["ip2location"]["active"]:
@@ -98,6 +104,7 @@ class Locator:
             if self.noncommercial["ip2location"]["generate_marker"]:
                 ip2location.add_to_map()
 
+
         # Json settings parsed for Ipstack database
         if self.noncommercial["ipstack"]["active"]:
             
@@ -106,6 +113,7 @@ class Locator:
             
             if self.noncommercial["ipstack"]["generate_marker"]:
                 ipstack.add_to_map()
+
 
         # Json settings parsed for MaxMind GeoLite2City database
         if self.noncommercial["max_mind_lite"]["active"]:
@@ -116,16 +124,18 @@ class Locator:
             if self.noncommercial["max_mind_lite"]["generate_marker"]:
                 max_mind_lite.add_to_map()
 
+
         # Commercial Databases
-        # Json settings parsed for IP Info database
-        if self.commercial["ip_info"]["active"]:
+        # Json settings parsed for Eurek database
+        if self.commercial["eurek"]["active"]:
             
-            ip_info = IpInfoDB(self.commercial["ip_info"]["api_key"])
-            self.locations.append(ip_info.get_location(ip))
+            eurek = EurekDB()
+            self.locations.append(eurek.get_location(ip))
             
-            if self.commercial["ip_info"]["generate_marker"]:
-                ip_info.add_to_map()
+            if self.commercial["eurek"]["generate_marker"]:
+                eurek.add_to_map()
         
+
         # Json settings parsed for GeobytesCityDetails database
         if self.commercial["geobytes_city"]["active"]:
             
@@ -135,6 +145,37 @@ class Locator:
             if self.commercial["geobytes_city"]["generate_marker"]:
                 geobytes_city.add_to_map()
         
+
+        # Json settings parsed for IP Info database
+        if self.commercial["ip_info"]["active"]:
+            
+            ip_info = IpInfoDB(self.commercial["ip_info"]["api_key"])
+            self.locations.append(ip_info.get_location(ip))
+            
+            if self.commercial["ip_info"]["generate_marker"]:
+                ip_info.add_to_map()
+        
+
+        # Json settings parsed for DbIpWeb database
+        if self.commercial["ip_web"]["active"]:
+            
+            ip_web = IpWebDB()
+            self.locations.append(ip_web.get_location(ip))
+            
+            if self.commercial["ip_web"]["generate_marker"]:
+                ip_web.add_to_map()
+
+
+        # Json settings parsed for DbIpWeb database
+        if self.commercial["ip2location_web"]["active"]:
+            
+            ip2location_web = Ip2locationWebDB()
+            self.locations.append(ip2location_web.get_location(ip))
+            
+            if self.commercial["ip2location_web"]["generate_marker"]:
+                ip2location_web.add_to_map()
+
+
         # Json settings parsed for MaxMindGeoIp2City database
         if self.commercial["max_mind"]["active"]:
             
@@ -143,6 +184,26 @@ class Locator:
             
             if self.commercial["max_mind"]["generate_marker"]:
                 max_mind.add_to_map()
+        
+
+        # Json settings parsed for MaxMindGeoIp2City database
+        if self.commercial["neustar_web"]["active"]:
+            
+            neustar_web = NeustarWebDB()
+            self.locations.append(neustar_web.get_location(ip))
+            
+            if self.commercial["neustar_web"]["generate_marker"]:
+                neustar_web.add_to_map()
+        
+
+        # Json settings parsed for MaxMindGeoIp2City database
+        if self.commercial["skyhook"]["active"]:
+            
+            skyhook = SkyhookDB()
+            self.locations.append(skyhook.get_location(ip))
+            
+            if self.commercial["skyhook"]["generate_marker"]:
+                skyhook.add_to_map()
 
     def calculate(self, average = True, clustering = False, interval = False, median = False):
         """
@@ -178,6 +239,7 @@ class Locator:
 
         # Generate map file
         if self.generate_map:
+            map.add_poly_lines(self.locations, calculated_locations)
             map.generate_map(location)
     
         return calculated_locations

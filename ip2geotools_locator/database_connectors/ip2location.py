@@ -8,6 +8,7 @@ from ip2geotools_locator.folium_map import FoliumMap
 # Namedtuple for storing location info
 Location = namedtuple('Location', 'latitude longitude')
 
+
 class Ip2LocationDB:
     """
     Class for handling DB connection into Ip2location Database
@@ -24,7 +25,7 @@ class Ip2LocationDB:
 
     def get_location(self, ip):
         """
-        Rethrieves location for given IP address from Ip2location database
+        Retrieves location for given IP address from Ip2location database
         Validation and exception handling included.
         """
         try:
@@ -54,16 +55,20 @@ class Ip2LocationDB:
 
         except TypeError as e:
             # Handling for TypeError exception (in case of database returning None values)
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))    
+            print("Module %s returned %s " % (__name__, str(e.with_traceback)))     
         
     def add_to_map(self):
         """
         Add Folium Marker to map
         Call get_location(ip) method before adding any markers to map
         """
-        self.m.add_marker_noncommercial(Ip2Location.__name__, 
-            self.__db_data.ip_address, 
-            self.__db_data.country, 
-            self.__db_data.city, 
-            self.__db_data.latitude, 
-            self.__db_data.longitude)
+        try:
+            self.m.add_marker_noncommercial(Ip2Location.__name__, 
+                self.__db_data.ip_address, 
+                self.__db_data.country, 
+                self.__db_data.city, 
+                self.__db_data.latitude, 
+                self.__db_data.longitude)
+        except AttributeError as e:
+            # Handling for AttributeError exception (in case of database returning None values)
+            print("Module %s returned %s " % (__name__, str(e.with_traceback)))

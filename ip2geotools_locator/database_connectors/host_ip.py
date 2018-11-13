@@ -8,6 +8,8 @@ from ip2geotools_locator.folium_map import FoliumMap
 # Namedtuple for storing location info
 Location = namedtuple('Location', 'latitude longitude')
 
+
+
 class HostIpDB:
     """
     Class for handling DB connection into HostIP Database
@@ -59,9 +61,13 @@ class HostIpDB:
         Add Folium Marker to map
         Call get_location(ip) method before adding any markers to map
         """
-        self.m.add_marker_noncommercial(HostIP.__name__, 
-            self.__db_data.ip_address, 
-            self.__db_data.country, 
-            self.__db_data.city, 
-            self.__db_data.latitude, 
-            self.__db_data.longitude)
+        try:
+            self.m.add_marker_noncommercial(HostIP.__name__, 
+                self.__db_data.ip_address, 
+                self.__db_data.country, 
+                self.__db_data.city, 
+                self.__db_data.latitude, 
+                self.__db_data.longitude)
+        except AttributeError as e:
+            # Handling for AttributeError exception (in case of database returning None values)
+            print("Module %s returned %s " % (__name__, str(e.with_traceback)))

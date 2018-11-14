@@ -4,6 +4,13 @@
 
 __author__ = """Oldřich Klíma"""
 __email__ = 'xklima27@vutbr.cz'
-__version__ = '0.2.0'
+__version__ = '0.4.0'
+
+import logging
 
 from ip2geotools_locator.main import Locator
+
+logger = logging.getLogger()
+logger.info("###############################################")
+logger.info("########## Ip2Geotools-Locator v 1.0 ##########")
+logger.info("###############################################")

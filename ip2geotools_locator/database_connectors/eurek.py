@@ -1,12 +1,8 @@
-from collections import namedtuple
-
 from ip2geotools.databases.commercial import Eurek
 from ip2geotools.errors import LocationError, IpAddressNotFoundError, PermissionRequiredError, InvalidRequestError, InvalidResponseError, ServiceError, LimitExceededError
 
 from ip2geotools_locator.folium_map import FoliumMap
-
-# Namedtuple for storing location info
-Location = namedtuple('Location', 'latitude longitude')
+from ip2geotools_locator.utils import *
 
 class EurekDB:
     """
@@ -27,31 +23,32 @@ class EurekDB:
         try:
             # Try to get and return location
             self.__db_data = Eurek.get(ip)
+            logger.info("%s: DB returned location %.3f N, %.3f E" % (__name__, self.__db_data.latitude, self.__db_data.longitude))
             return Location(self.__db_data.latitude, self.__db_data.longitude)
        
         except IpAddressNotFoundError as e:
             # Handling for IpAddressNotFoundError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
+            logger.warning("%s: Database could not find IP address. IpAddressNotFoundError: %s " % (__name__, str(e))) 
         
         except PermissionRequiredError as e:
             # Handling for PermissionRequiredError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))
+            logger.critical("%s: Additional setings required for DB. PermissionRequiredError: %s " % (__name__, str(e)))
 
         except ServiceError as e:
             # Handling for ServiceError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
+            logger.error("%s: Service is unavailable. ServiceError: %s " % (__name__, str(e))) 
         
         except LimitExceededError as e:
             # Handling for LimitExceededError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))     
+            logger.warning("%s: LimitExceededError: %s " % (__name__, str(e)))     
 
         except (LocationError, InvalidRequestError, InvalidResponseError) as e:
             # Handling for invalid data, request and response exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
+            logger.error("%s: returned %s " % (__name__, str(e.__class__))) 
 
         except TypeError as e:
             # Handling for TypeError exception (in case of database returning None values)
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))     
+            logger.warning("%s: DB returned invalid values. TypeError: %s " % (__name__, str(e)))     
         
     def add_to_map(self):
         """
@@ -59,6 +56,7 @@ class EurekDB:
         Call get_location(ip) method before adding any markers to map
         """
         try:
+            logger.debug("%s: Calling add_marker method for %s DB" % (__name__, Eurek.__name__))
             self.m.add_marker_commercial(Eurek.__name__, 
                 self.__db_data.ip_address, 
                 self.__db_data.country, 
@@ -67,4 +65,4 @@ class EurekDB:
                 self.__db_data.longitude)
         except AttributeError as e:
             # Handling for AttributeError exception (in case of database returning None values)
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))
+            logger.warning("%s: Cannot add empty marker %s " % (__name__, str(e)))

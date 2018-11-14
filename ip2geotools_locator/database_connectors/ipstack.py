@@ -1,12 +1,8 @@
-from collections import namedtuple
-
 from ip2geotools.databases.noncommercial import ipstack
 from ip2geotools.errors import LocationError, IpAddressNotFoundError, PermissionRequiredError, InvalidRequestError, InvalidResponseError, ServiceError, LimitExceededError
 
 from ip2geotools_locator.folium_map import FoliumMap
-
-# Namedtuple for storing location info
-Location = namedtuple('Location', 'latitude longitude')
+from ip2geotools_locator.utils import *
 
 
 class IpstackDB:
@@ -20,7 +16,7 @@ class IpstackDB:
     def __init__(self, api_key):
         # Ipstack database needs API key to read values
         if api_key == None:
-            raise PermissionRequiredError("Database %s needs API key to work!" % ipstack.__name__)
+            logger.critical("%s:Database %s needs API key to work!" % (__name__, ipstack.__name__))
         self.__api_key = api_key        
 
     def get_location(self, ip):
@@ -31,31 +27,32 @@ class IpstackDB:
         try:
             # Try to get and return location
             self.__db_data = ipstack.get(ip, self.__api_key)
+            logger.info("%s: DB returned location %.3f N, %.3f E" % (__name__, self.__db_data.latitude, self.__db_data.longitude))
             return Location(self.__db_data.latitude, self.__db_data.longitude)
        
         except IpAddressNotFoundError as e:
             # Handling for IpAddressNotFoundError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
+            logger.warning("%s: Database could not find IP address. IpAddressNotFoundError: %s " % (__name__, str(e))) 
         
         except PermissionRequiredError as e:
             # Handling for PermissionRequiredError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))
+            logger.critical("%s: Additional setings required for DB. PermissionRequiredError: %s " % (__name__, str(e)))
 
         except ServiceError as e:
             # Handling for ServiceError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
+            logger.error("%s: Service is unavailable. ServiceError: %s " % (__name__, str(e))) 
         
         except LimitExceededError as e:
             # Handling for LimitExceededError exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))     
+            logger.warning("%s: LimitExceededError: %s " % (__name__, str(e)))     
 
         except (LocationError, InvalidRequestError, InvalidResponseError) as e:
             # Handling for invalid data, request and response exception
-            print("Module %s returned %s " % (__name__, str(e.with_traceback))) 
+            logger.error("%s: returned %s " % (__name__, str(e.__class__))) 
 
         except TypeError as e:
             # Handling for TypeError exception (in case of database returning None values)
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))     
+            logger.warning("%s: DB returned invalid values. TypeError: %s " % (__name__, str(e)))     
         
     def add_to_map(self):
         """
@@ -63,6 +60,7 @@ class IpstackDB:
         Call get_location(ip) method before adding any markers to map
         """
         try:
+            logger.debug("%s: Calling add_marker method for %s DB" % (__name__, ipstack.__name__))
             self.m.add_marker_noncommercial(ipstack.__name__, 
                 self.__db_data.ip_address, 
                 self.__db_data.country, 
@@ -71,4 +69,4 @@ class IpstackDB:
                 self.__db_data.longitude)
         except AttributeError as e:
             # Handling for AttributeError exception (in case of database returning None values)
-            print("Module %s returned %s " % (__name__, str(e.with_traceback)))
+            logger.warning("%s: Cannot add empty marker %s " % (__name__, str(e)))

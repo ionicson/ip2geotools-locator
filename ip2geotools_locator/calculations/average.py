@@ -1,7 +1,6 @@
 from collections import namedtuple
+from ip2geotools_locator.utils import *
 
-#location is stored as namedtuple
-Location = namedtuple('Location', 'latitude longitude')
 
 class Average():   
     """
@@ -15,6 +14,8 @@ class Average():
         
         Location = namedtuple('Location', 'latitude longitude')
         """
+        logger.info("%s: Calculation of Average location started." % __name__)
+
         __latitude  = 0.0
         __longitude = 0.0
         #Tracking of calculable locations
@@ -26,13 +27,16 @@ class Average():
                 __latitude += loc.latitude
                 __longitude += loc.longitude
                 __items += 1
+                
+                logger.debug("%s: Calculation of Average. Iteration: %.0f, Latitude sum: %.3f, Longitude sum: %.3f" % (__name__, __items, __latitude, __longitude))
             except AttributeError as e:
-                print("Module " + __name__ + " has skipped wrong value due to: " + e.with_traceback)
+                logger.warning("%s: value excluded from calculation. AttributeError: %s" % (__name__, str(e)))
 
         try:
             #Calculate Average and return as Location
-            return Location(__latitude / __items, __longitude / __items)
+            logger.info("%s: Calculated Average location form %.0f DB responses is: %.3f N, %.3f" % (__name__, __items, __latitude / __items, __longitude / __items))
+            return Location(round(__latitude / __items, 4), round(__longitude / __items, 4))
         except ZeroDivisionError as e:
             #If None locations were provided
-            print("Calculation of Average canceled due to " + e)
+            logger.critical("%s: None database have returned values. ZeroDivisionError: %s" % (__name__, str(e)))
     

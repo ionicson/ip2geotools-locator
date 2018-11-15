@@ -4,7 +4,8 @@
 
 __author__ = """Oldřich Klíma"""
 __email__ = 'xklima27@vutbr.cz'
-__version__ = '0.4.0'
+__version__ = '1.0.0'
+name = "ip2geotools-locator"
 
 import logging
 

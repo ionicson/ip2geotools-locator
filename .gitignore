@@ -109,3 +109,6 @@ pip-selfcheck.json
 scr.py
 settings.json
 data
+
+# vscode
+.vscode

@@ -21,7 +21,7 @@ setup(
     author="Oldřich Klíma",
     author_email='xklima27@vutbr.cz',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
@@ -49,7 +49,7 @@ setup(
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/Ionicson/ip2geotools_locator',
-    version='0.4.0',
+    url='https://github.com/Ionicson/ip2geotools-locator',
+    version='1.0.0',
     zip_safe=False,
 )

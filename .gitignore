@@ -102,3 +102,13 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Other files
+locations.html
+pip-selfcheck.json
+scr.py
+settings.json
+data
+
+# vscode
+.vscode

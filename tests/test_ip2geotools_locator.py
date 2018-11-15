@@ -7,7 +7,7 @@
 import unittest
 from click.testing import CliRunner
 
-from ip2geotools_locator import ip2geotools_locator
+from ip2geotools_locator import main
 from ip2geotools_locator import cli
 
 

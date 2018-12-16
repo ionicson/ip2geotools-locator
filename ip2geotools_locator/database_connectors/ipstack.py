@@ -1,8 +1,8 @@
-from ip2geotools.databases.noncommercial import ipstack
+from ip2geotools.databases.noncommercial import Ipstack
 from ip2geotools.errors import LocationError, IpAddressNotFoundError, PermissionRequiredError, InvalidRequestError, InvalidResponseError, ServiceError, LimitExceededError
 
 from ip2geotools_locator.folium_map import FoliumMap
-from ip2geotools_locator.utils import *
+from ip2geotools_locator.utils import logger, Location
 
 
 class IpstackDB:
@@ -16,7 +16,7 @@ class IpstackDB:
     def __init__(self, api_key):
         # Ipstack database needs API key to read values
         if api_key == None:
-            logger.critical("%s:Database %s needs API key to work!" % (__name__, ipstack.__name__))
+            logger.critical("%s:Database %s needs API key to work!" % (__name__, Ipstack.__name__))
         self.__api_key = api_key        
 
     def get_location(self, ip):
@@ -26,7 +26,7 @@ class IpstackDB:
         """
         try:
             # Try to get and return location
-            self.__db_data = ipstack.get(ip, self.__api_key)
+            self.__db_data = Ipstack.get(ip, self.__api_key)
             logger.info("%s: DB returned location %.3f N, %.3f E" % (__name__, self.__db_data.latitude, self.__db_data.longitude))
             return Location(self.__db_data.latitude, self.__db_data.longitude)
        
@@ -60,8 +60,8 @@ class IpstackDB:
         Call get_location(ip) method before adding any markers to map
         """
         try:
-            logger.debug("%s: Calling add_marker method for %s DB" % (__name__, ipstack.__name__))
-            self.m.add_marker_noncommercial(ipstack.__name__, 
+            logger.debug("%s: Calling add_marker method for %s DB" % (__name__, Ipstack.__name__))
+            self.m.add_marker_noncommercial(Ipstack.__name__, 
                 self.__db_data.ip_address, 
                 self.__db_data.country, 
                 self.__db_data.city, 

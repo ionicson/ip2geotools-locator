@@ -1,6 +1,17 @@
 =======
 History
 =======
+1.1.2 (2018-12-14)
+------------------
+* Default settings added
+
+1.0.2 (2018-12-13)
+------------------
+* Ipstack DB, Security issues fixed, Beta version
+
+1.0.1 (2018-11-13)
+------------------
+* Build errors fixed
 
 1.0.0 (2018-11-13)
 ------------------

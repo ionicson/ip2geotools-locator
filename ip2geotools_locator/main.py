@@ -13,7 +13,7 @@ from ip2geotools_locator.database_connectors import HostIpDB, IpCityDB, Ip2Locat
 from ip2geotools_locator.database_connectors import EurekDB, GeobytesCityDB, IpInfoDB, IpWebDB, Ip2locationWebDB, MaxMindDB, NeustarWebDB, SkyhookDB
 from ip2geotools_locator.calculations import Average, Clustering, Median
 from ip2geotools_locator.folium_map import FoliumMap
-from ip2geotools_locator.utils import logger
+from ip2geotools_locator.utils import logger, DEFAULT_SETTINGS
 
 Location = namedtuple('Location', 'type latitude longitude')
 
@@ -38,8 +38,13 @@ class Locator:
         self.generate_map = generate_map
 
         # Read settings.json
-        with open ("settings.json", "r") as read_file:
-            settings = json.load(read_file)
+        try:
+            with open ("settings.json", "r") as read_file:
+              settings = json.load(read_file)
+        except FileNotFoundError:
+            settings = json.loads(DEFAULT_SETTINGS)
+            with open ("settings.json", "w") as write_file:
+                json.dump(settings, write_file)
 
         # Parse settings file
         self.commercial = settings["commercial"]
@@ -259,7 +264,7 @@ class Locator:
         # Calculate location with SciPy Clustering
         if clustering:
             logger.debug("%s: Clustering of location is Active." % __name__)
-            location = Clustering.calculate(self.locations)
+            #location = Clustering.calculate(self.locations)
             map.add_calculated_marker("Clustering", self.ip_address, location.latitude, location.longitude)
             calculated_locations.append(location)
         

@@ -4,7 +4,7 @@
 import sys
 import click
 
-
+# pylint: disable=unused-argument
 @click.command()
 def main(args=None):
     """Console script for ip2geotools_locator."""

@@ -38,13 +38,13 @@ setup(
     description="""An extension of the ip2geotools package that refines
                 the estimation of the location of different geolocation databases using statistical 
                 methods.""",
-    entry_points={'console_scripts': ['ip2geotools_locator=ip2geotools_locator.cli:main']},
+    entry_points={'console_scripts': ['ip2geotools_locator=ip2geotools_locator.cli:cmd']},
     install_requires=requirements,
     license="MIT license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords='ip2geotools_locator',
-    name='ip2geotools_locator',
+    keywords='ip2geotools-locator',
+    name='ip2geotools-locator',
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     setup_requires=setup_requirements,
     test_suite='tests',

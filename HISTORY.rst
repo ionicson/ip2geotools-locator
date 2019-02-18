@@ -1,6 +1,10 @@
 =======
 History
 =======
+1.1.3 (2019-02-18)
+------------------
+* Enviroment cleanup, pipenv added, tox removed
+
 1.1.2 (2018-12-14)
 ------------------
 * Default settings added

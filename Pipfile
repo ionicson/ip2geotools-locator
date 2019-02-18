@@ -4,9 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pylint = "*"
+pytest = "*"
+ip2geotools-locator = {editable = true,path = "."}
 
 [packages]
-ip2geotools-locator = {editable = true,path = "."}
+ip2geotools = "*"
+scipy = "*"
+folium = "*"
+geopy = "*"
 
 [requires]
 python_version = "3.7"

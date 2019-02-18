@@ -13,6 +13,8 @@ ip2geotools = "*"
 scipy = "*"
 folium = "*"
 geopy = "*"
+sklearn = "*"
+kneed = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,3 +1,4 @@
+"""Modules for handling connection to Geolocation databases using ip2geotools package"""
 from ip2geotools_locator.database_connectors.eurek import EurekDB
 from ip2geotools_locator.database_connectors.geobytes_city import GeobytesCityDB
 from ip2geotools_locator.database_connectors.host_ip import HostIpDB

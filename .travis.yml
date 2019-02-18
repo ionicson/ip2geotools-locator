@@ -4,26 +4,24 @@ language: python
 python:
   - 3.6
   - 3.5
-  - 3.4
-  - 2.7
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
+install: 
+  - pip install pylint
+  - pip install .
 
 # Command to run tests, e.g. python setup.py test
-script: tox
+script: 
+  - python setup.py test
+  - pylint -d duplicate-code ip2geotools_locator
 
-# Assuming you have installed the travis-ci CLI tool, after you
-# create the Github repo and add it to Travis, run the
-# following command to finish PyPI deployment setup:
-# $ travis encrypt --add deploy.password
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
   user: Ionicson
   password:
-    secure: PLEASE_REPLACE_ME
+    secure: sNHke/lN4lQooE7r9l6+Ury2HpuRQgoYBe5UAvVcfstCwQANUAZtRit2MS9HyZIm7E9X++ZqSpZrkVD+bfPdaGQJF5pJq/6WyPOD7aSzjxU1qVChoDKFXcKrITKLEnvuV7jwz0nmFudYN+nHacXqO6xke+mSZ1gMb9D43U6DlS3F4LeRbUKLLImcnUbkNPaWYZeSClfwHfpq2ca5229bt2iyWRZLpK8tsU2qxsKZOWmfeaePeZmuNse2hh4Q+y1feubz4PKNQBnljXiu4x9Ld9qXmMhLl3sHwoqyO4VoCCn1jERNyNFQ1wFH+2qWo4tep5Zg6A8YxldFGhCF75o1/p+/D6+b/kc6YknH0o1V/OGMTnMoxBQZhgwYpfeoPjlqC7AQySp7ndXOCACXwCQk7RXbESMh3PCR0nRAlHVmG6B1Bi+P0M2qQGQ1bH8O2IRsI1zvV1Ml54Yi4T7PDnL7e/7XH86ZsVnQAYb0RL+GqYkUZvFElOZHuM3X1csFhUMu5BVBjj44cDpPuXfW96zFkOCaO0U+KlxrZ4nHyBKRXL+qmwBe7MCr/kDHhBTwLeC911DQwkiTPW5M0WKGwwlJjhdOvvR1MGjw27pLcJ0ZVaAG0AKFN8obRfY67nmPsQUayDMvyIneeMZpT4ticrV146UJdAn34SwyliHGFKkeVNk=
   on:
-    tags: true
-    repo: Ionicson/ip2geotools_locator
+    branch: master
+    repo: Ionicson/ip2geotools-locator
     python: 3.6

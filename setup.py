@@ -15,7 +15,9 @@ requirements = ['Click>=6.0',
                 'folium>=0.6.0',
                 'geopy>=1.17.0',
                 'ip2geotools>=0.1.3',
-                'scipy>=1.1.0'
+                'kneed>=0.2.4',
+                'scipy>=1.1.0',
+                'sklearn>=0.0'
                 ]
 
 setup_requirements = None

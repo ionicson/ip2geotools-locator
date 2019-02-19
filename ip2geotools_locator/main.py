@@ -14,7 +14,7 @@ from ip2geotools_locator.database_connectors import (HostIpDB, IpCityDB, Ip2Loca
 from ip2geotools_locator.database_connectors import (EurekDB, GeobytesCityDB, IpInfoDB, IpWebDB,
                                                      Ip2locationWebDB, MaxMindDB, NeustarWebDB,
                                                      SkyhookDB)
-from ip2geotools_locator.calculations import Average,Clustering, Median
+from ip2geotools_locator.calculations import Average, Clustering, Median
 from ip2geotools_locator.folium_map import FoliumMap
 from ip2geotools_locator.utils import LOGGER as logger, DEFAULT_SETTINGS
 

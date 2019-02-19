@@ -7,12 +7,14 @@ from ip2geotools_locator.utils import Location, LOGGER as logger
 
 
 class Clustering():
-
-    # pylint: disable=too-few-public-methods, invalid-name
+    """
+    Class for calculating Cluster centroid from list of Locations
+    """
+    # pylint: disable=too-few-public-methods, invalid-name, too-many-locals
     @staticmethod
     def calculate(locations=None):
         """
-        Static method calculates Median of given location list.
+        Static method calculates Data cluster centers of given location list.
         Locations list must be in form of namedtuple and is also returned like that:
 
         Location = namedtuple('Location', 'latitude longitude')

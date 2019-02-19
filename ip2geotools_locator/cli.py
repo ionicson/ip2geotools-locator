@@ -24,13 +24,15 @@ def cmd(logs):
 
 @click.option('-a', '--average', 'average', is_flag=True)
 @click.option('--no-average', 'average', flag_value=False, default=True)
+@click.option('-c', '--clustering', 'clustering', is_flag=True)
 @click.option('-m', '--median', 'median', is_flag=True)
 
 @click.option('-c', '--commercial', 'commercial', is_flag=True)
 @click.option('-n', '--noncommercial', 'noncommercial', is_flag=True)
 @click.option('-d', '--database', 'database', type=click.STRING, multiple=True)
 # pylint: disable=too-many-arguments
-def locate(ip_address, gen_map, average, median, commercial, noncommercial, database):
+def locate(ip_address, gen_map, average, clustering, median, commercial, noncommercial, database):
+    """Calculate estimate of geographical location for IP address"""
     databases = []
 
     match = ip_address.split(".")
@@ -52,7 +54,7 @@ def locate(ip_address, gen_map, average, median, commercial, noncommercial, data
     LOCATOR.generate_map = gen_map
     LOCATOR.get_locations(ip_address, databases)
 
-    calculated_locations = LOCATOR.calculate(average=average, median=median)
+    calculated_locations = LOCATOR.calculate(average=average, clustering=clustering, median=median)
 
     for calc_loc in calculated_locations:
         click.echo("Location estimated by %s is: %f N, %f E" %
@@ -62,4 +64,5 @@ def locate(ip_address, gen_map, average, median, commercial, noncommercial, data
 
 @cmd.command()
 def setup():
+    """Database setup:"""
     pass

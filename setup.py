@@ -15,7 +15,9 @@ requirements = ['Click>=6.0',
                 'folium>=0.6.0',
                 'geopy>=1.17.0',
                 'ip2geotools>=0.1.3',
-                'scipy>=1.1.0'
+                'kneed>=0.2.4',
+                'scipy>=1.1.0',
+                'sklearn>=0.0'
                 ]
 
 setup_requirements = None
@@ -38,18 +40,18 @@ setup(
     description="""An extension of the ip2geotools package that refines
                 the estimation of the location of different geolocation databases using statistical 
                 methods.""",
-    entry_points={'console_scripts': ['ip2geotools_locator=ip2geotools_locator.cli:main']},
+    entry_points={'console_scripts': ['ip2geotools-locator=ip2geotools_locator.cli:cmd']},
     install_requires=requirements,
     license="MIT license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords='ip2geotools_locator',
-    name='ip2geotools_locator',
+    keywords='ip2geotools-locator',
+    name='ip2geotools-locator',
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/Ionicson/ip2geotools-locator',
-    version='1.1.3',
+    version='1.2.0',
     zip_safe=False,
 )

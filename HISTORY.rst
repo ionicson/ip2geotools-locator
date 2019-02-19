@@ -1,6 +1,10 @@
 =======
 History
 =======
+1.2.0 (2019-02-19)
+------------------
+* Clustering calculation method, CLI
+
 1.1.3 (2019-02-18)
 ------------------
 * Enviroment cleanup, pipenv added, tox removed

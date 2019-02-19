@@ -14,11 +14,9 @@ from ip2geotools_locator.database_connectors import (HostIpDB, IpCityDB, Ip2Loca
 from ip2geotools_locator.database_connectors import (EurekDB, GeobytesCityDB, IpInfoDB, IpWebDB,
                                                      Ip2locationWebDB, MaxMindDB, NeustarWebDB,
                                                      SkyhookDB)
-from ip2geotools_locator.calculations import Average, Median
+from ip2geotools_locator.calculations import Average, Clustering, Median
 from ip2geotools_locator.folium_map import FoliumMap
 from ip2geotools_locator.utils import LOGGER as logger, DEFAULT_SETTINGS
-
-Location = namedtuple('Location', 'type latitude longitude')
 
 
 class Locator:
@@ -275,7 +273,7 @@ class Locator:
         (Location.latitude, location.longitude).
         """
         logger.debug("%s: Method calculate has been called.", __name__)
-        calculated_locations = []
+        calculated_locations = {}
         f_map = FoliumMap()
 
         # Calculate average of locations (default method)
@@ -288,15 +286,15 @@ class Locator:
             f_map.add_calculated_marker("Average", self.ip_address, location.latitude,
                                         location.longitude)
             # Append calculated location into list
-            calculated_locations.append(location)
+            calculated_locations["Average"] = location
 
         # Calculate location with SciPy Clustering
         if clustering:
             logger.debug("%s: Clustering of location is Active.", __name__)
-            #location = Clustering.calculate(self.locations)
+            location = Clustering.calculate(self.locations)
             f_map.add_calculated_marker("Clustering", self.ip_address, location.latitude,
                                         location.longitude)
-            calculated_locations.append(location)
+            calculated_locations["Clustering"] = location
 
         # Calculate location from 90% Confdence interval
         if interval:
@@ -310,7 +308,7 @@ class Locator:
             location = Median.calculate(self.locations)
             f_map.add_calculated_marker("Median", self.ip_address, location.latitude,
                                         location.longitude)
-            calculated_locations.append(location)
+            calculated_locations["Median"] = location
 
         # Generate map file?
         if self.generate_map:

@@ -76,15 +76,15 @@ class FoliumMap:
         """Method for creating Folium PolyLines"""
 
         # Add polylines from each calculated location
-        for calculated_loc in calculated_locations:
-            logger.info("%s: Creating Folium PolyLines for %s", __name__, str(calculated_loc))
+        for calc_loc in calculated_locations:
+            logger.info("%s: Creating Folium PolyLines for %s", __name__, str(calc_loc))
             # For each DB location
             for loc in locations:
                 try:
                     # Calculate distance between coordinates
-                    dist = distance.distance(loc, calculated_loc).km
+                    dist = distance.distance(loc, calculated_locations[calc_loc]).km
                     # Add Folium PolyLine
-                    cls.poly_lines.append(folium.PolyLine([loc, calculated_loc],
+                    cls.poly_lines.append(folium.PolyLine([loc, calculated_locations[calc_loc]],
                                                           tooltip="Distance: %.3f km" % dist,
                                                           weight=3, opacity=1))
 

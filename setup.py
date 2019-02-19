@@ -40,7 +40,7 @@ setup(
     description="""An extension of the ip2geotools package that refines
                 the estimation of the location of different geolocation databases using statistical 
                 methods.""",
-    entry_points={'console_scripts': ['ip2geotools_locator=ip2geotools_locator.cli:cmd']},
+    entry_points={'console_scripts': ['ip2geotools-locator=ip2geotools_locator.cli:cmd']},
     install_requires=requirements,
     license="MIT license",
     long_description=readme + '\n\n' + history,
@@ -52,6 +52,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/Ionicson/ip2geotools-locator',
-    version='1.1.3',
+    version='1.2.0',
     zip_safe=False,
 )

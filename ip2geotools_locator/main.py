@@ -7,7 +7,6 @@ This module contains whole application logic
 
 """
 import json
-from collections import namedtuple
 
 from ip2geotools_locator.database_connectors import (HostIpDB, IpCityDB, Ip2LocationDB, IpstackDB,
                                                      MaxMindLiteDB)

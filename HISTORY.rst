@@ -1,6 +1,10 @@
 =======
 History
 =======
+1.3.0 (2019-03-04)
+------------------
+* Clustering calculation improved
+
 1.2.0 (2019-02-19)
 ------------------
 * Clustering calculation method, CLI

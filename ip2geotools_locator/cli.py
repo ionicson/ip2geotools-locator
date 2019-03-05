@@ -65,4 +65,3 @@ def locate(ip_address, gen_map, average, clustering, median, commercial, noncomm
 @cmd.command()
 def setup():
     """Database setup:"""
-    pass

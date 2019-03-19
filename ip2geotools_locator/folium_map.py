@@ -11,20 +11,20 @@ class FoliumMap:
     markers = []
     poly_lines = []
     FORMATTED_STRING = """
-    <b>IP: %s</b><p>Country: %s</p><p>City: %s</p><p>Location: %.3f N, %.3f E</p>
+    <b>IP: %s</b><p>Country: %s</p><p>Region: %s</p><p>City: %s</p><p>Location: %.3f N, %.3f E</p>
     """
     # pylint: disable=too-many-arguments
     @classmethod
-    def add_marker_noncommercial(cls, name, ip_address, country, city, latitude, longitude):
+    def add_marker_noncommercial(cls, name, ip_address, country, region, city, latit, longit):
         """This method creates marker for noncommercial database"""
 
         try:
             # Adding debug record
             logger.info("%s: Adding Marker for noncommercial DB %s", __name__, name)
             # append Folium Marker into class variable
-            cls.markers.append(folium.Marker([latitude, longitude],
+            cls.markers.append(folium.Marker([latit, longit],
                                              popup=cls.FORMATTED_STRING %
-                                             (ip_address, country, city, latitude, longitude),
+                                             (ip_address, country, region, city, latit, longit),
                                              icon=folium.Icon(color='green'), tooltip=name))
 
         except TypeError as exception:
@@ -34,15 +34,15 @@ class FoliumMap:
 
     # pylint: disable=too-many-arguments
     @classmethod
-    def add_marker_commercial(cls, name, ip_address, country, city, latitude, longitude):
+    def add_marker_commercial(cls, name, ip_address, country, region, city, latit, longit):
         """This method creates marker for commercial database"""
 
         try:
             # Adding debug record
             logger.info("%s: Adding Marker for commercial DB %s", __name__, name)
             # append Folium Marker into class variable
-            cls.markers.append(folium.Marker([latitude, longitude], popup=cls.FORMATTED_STRING %
-                                             (ip_address, country, city, latitude, longitude),
+            cls.markers.append(folium.Marker([latit, longit], popup=cls.FORMATTED_STRING %
+                                             (ip_address, country, region, city, latit, longit),
                                              icon=folium.Icon(color='red'), tooltip=name))
 
         except TypeError as exception:
@@ -82,9 +82,10 @@ class FoliumMap:
             for loc in locations:
                 try:
                     # Calculate distance between coordinates
-                    dist = distance.distance(loc, calculated_locations[calc_loc]).km
+                    dist = distance.distance(locations[loc], calculated_locations[calc_loc]).km
                     # Add Folium PolyLine
-                    cls.poly_lines.append(folium.PolyLine([loc, calculated_locations[calc_loc]],
+                    cls.poly_lines.append(folium.PolyLine([locations[loc],
+                                                           calculated_locations[calc_loc]],
                                                           tooltip="Distance: %.3f km" % dist,
                                                           weight=3, opacity=1))
 

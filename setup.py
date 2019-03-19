@@ -14,7 +14,7 @@ with open('HISTORY.rst') as history_file:
 requirements = ['Click>=6.0',
                 'folium>=0.6.0',
                 'geopy>=1.17.0',
-                'ip2geotools>=0.1.3',
+                'ip2geotools>=0.1.4',
                 'kneed>=0.2.4',
                 'scipy>=1.1.0',
                 'sklearn>=0.0'
@@ -27,7 +27,7 @@ test_requirements = None
 setup(
     author="Oldřich Klíma",
     author_email='xklima27@vutbr.cz',
-    classifiers=['Development Status :: 4 - Beta',
+    classifiers=['Development Status :: 5 - Production/Stable',
                  'Intended Audience :: Developers',
                  'License :: OSI Approved :: MIT License',
                  'Natural Language :: English',
@@ -52,6 +52,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/Ionicson/ip2geotools-locator',
-    version='1.3.0',
+    version='1.4.0',
     zip_safe=False,
 )

@@ -1,6 +1,13 @@
 =======
 History
 =======
+1.4.0 (2019-03-17)
+------------------
+* Logging refactor
+* None values excluded
+* CLI Changed
+* Errors fixed
+
 1.3.0 (2019-03-04)
 ------------------
 * Clustering calculation improved

@@ -14,7 +14,7 @@ class Average():
 
         Location = namedtuple('Location', 'latitude longitude')
         """
-        logger.info("%s: Calculation of Average location started.", __name__)
+        logger.info("Calculation of Average location started.")
 
         __latitude = 0.0
         __longitude = 0.0
@@ -24,22 +24,20 @@ class Average():
         for loc in locations:
             # sum of locations (None locations are skipped)
             try:
-                __latitude += loc.latitude
-                __longitude += loc.longitude
+                __latitude += locations[loc].latitude
+                __longitude += locations[loc].longitude
                 __items += 1
 
-                logger.debug("""%s: Calculation of Average. Iteration: %.0f, Latitude sum: %.3f,
-                             Longitude sum: %.3f""", __name__, __items, __latitude, __longitude)
+                logger.debug("""Calculation of Average. Iteration: %.0f, Latitude sum: %.3f,
+                             Longitude sum: %.3f""", __items, __latitude, __longitude)
             except AttributeError as exception:
-                logger.warning("%s: value excluded from calculation. AttributeError: %s",
-                               __name__, str(exception))
+                logger.warning("Value excluded from calc. AttributeError: %s", str(exception))
 
         try:
             # Calculate Average and return as Location
-            logger.info("%s: Calculated Average location form %.0f DB responses is: %.3f N, %.3f",
-                        __name__, __items, __latitude / __items, __longitude / __items)
+            logger.info("Calculated Average location form %.0f DB responses is: %.3f N, %.3f",
+                        __items, __latitude / __items, __longitude / __items)
             return Location(round(__latitude / __items, 4), round(__longitude / __items, 4))
         except ZeroDivisionError as exception:
             # If None locations were provided
-            logger.critical("%s: None database have returned values. ZeroDivisionError: %s",
-                            __name__, str(exception))
+            logger.critical("Databases not returned values. ZeroDivisionError: %s", str(exception))

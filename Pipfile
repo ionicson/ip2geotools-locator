@@ -4,8 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pylint = "*"
 pytest = "*"
+pylint = "<=2.2.0"
 ip2geotools-locator = {editable = true,path = "."}
 
 [packages]
@@ -15,6 +15,7 @@ folium = "*"
 geopy = "*"
 sklearn = "*"
 kneed = "*"
+click = "*"
 
 [requires]
 python_version = "3.7"

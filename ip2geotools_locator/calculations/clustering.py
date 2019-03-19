@@ -19,7 +19,7 @@ class Clustering():
 
         Location = namedtuple('Location', 'latitude longitude')
         """
-        logger.info("%s: Calculation of Median location started.", __name__)
+        logger.info("Calculation of Median location started.")
         # List of latitudes and longitudes
         __latitudes = []
         __longitudes = []
@@ -32,16 +32,16 @@ class Clustering():
         for loc in locations:
             # Locations divided into latitude longitude lists
             try:
-                __latitudes.append(loc.latitude)
-                __longitudes.append(loc.longitude)
+                __latitudes.append(locations[loc].latitude)
+                __longitudes.append(locations[loc].longitude)
                 __iteration += 1
 
-                logger.debug("%s: separation of latitudes and longitudes. %i iteration.", __name__,
+                logger.debug("separation of latitudes and longitudes. %i iteration.",
                              __iteration)
 
             except AttributeError as exception:
                 # None values from database are skipped
-                logger.warning("%s: value excluded from iterration. AttributeError: %s", __name__,
+                logger.warning("value excluded from iterration. AttributeError: %s",
                                str(exception))
 
         # Data transformation into numpy array

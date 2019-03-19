@@ -14,7 +14,7 @@ class Median():
 
         Location = namedtuple('Location', 'latitude longitude')
         """
-        logger.info("%s: Calculation of Median location started.", __name__)
+        logger.info("Calculation of Median location started.")
         # List of latitudes and longitudes
         __latitudes = []
         __longitudes = []
@@ -25,16 +25,16 @@ class Median():
         for loc in locations:
             # Locations divided into latitude longitude lists
             try:
-                __latitudes.append(loc.latitude)
-                __longitudes.append(loc.longitude)
+                __latitudes.append(locations[loc].latitude)
+                __longitudes.append(locations[loc].longitude)
                 __iteration += 1
 
-                logger.debug("%s: separation of latitudes and longitudes. %i iteration.", __name__,
+                logger.debug("separation of latitudes and longitudes. %i iteration.",
                              __iteration)
 
             except AttributeError as exception:
                 # None values from database are skipped
-                logger.warning("%s: value excluded from iterration. AttributeError: %s", __name__,
+                logger.warning("value excluded from iterration. AttributeError: %s",
                                str(exception))
 
         # If both lists have same length median can be calculated
@@ -43,37 +43,36 @@ class Median():
             __latitudes.sort()
             __longitudes.sort()
 
-            logger.debug("%s: sorting of values.", __name__)
+            logger.debug("sorting of values.")
 
             # If number of elements is even, median is calculated as average of two central values
             if len(__latitudes) % 2 == 0:
-                logger.debug("""%s: len() of location list is even number. Calculating average of
-                             closest middle values.""", __name__)
+                logger.debug("""len() of location list is even number. Calculating average of
+                             closest middle values.""")
 
                 index = int(len(__longitudes) / 2)
                 __latitude = (__latitudes[index] + __latitudes[index - 1]) / 2
                 __longitude = (__longitudes[index] + __longitudes[index - 1]) /2
 
-                logger.info("%s Calculated Median location form %i DB responses is: %.3f N, %.3f",
-                            __name__, __iteration, __latitude, __longitude)
+                logger.info("Calculated Median location form %i DB responses is: %.3f N, %.3f",
+                            __iteration, __latitude, __longitude)
                 return Location(round(__latitude, 4), round(__longitude, 4))
 
             # If number of elements is odd, the median is in the middle of list
             if len(__latitudes) % 2 != 0:
-                logger.debug("%s: len() of location list is odd number. Calculating real median.",
-                             __name__)
+                logger.debug("len() of location list is odd number. Calculating real median.")
 
                 index = int((len(__latitudes) - 1) / 2)
                 __latitude = __latitudes[index]
                 __longitude = __longitudes[index]
 
-                logger.info("%s: Calculated Median location form %i DB responses is: %.3f N, %.3f",
-                            __name__, __iteration, __latitude, __longitude)
+                logger.info("Calculated Median location form %i DB responses is: %.3f N, %.3f",
+                            __iteration, __latitude, __longitude)
                 return Location(round(__latitude, 4), round(__longitude, 4))
 
             # Handling for empty lists
-            logger.error("%s: None database have returned values.", __name__)
+            logger.error("None database have returned values.")
             return 0
 
-        logger.critical("%s: Calculation of median canceled due to OTHER error!", __name__)
+        logger.critical("Calculation of median canceled due to OTHER error!")
         return 0

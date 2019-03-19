@@ -2,8 +2,8 @@
 import logging
 from collections import namedtuple
 
-LOG_FORMAT = "%(asctime)s %(levelname)s - %(message)s"
-logging.basicConfig(filename="ip2geotools_locator.log", level=logging.DEBUG, format=LOG_FORMAT,
+LOG_FORMAT = "%(asctime)s %(levelname)s - %(module)s: %(message)s"
+logging.basicConfig(filename="ip2geotools_locator.log", level=logging.INFO, format=LOG_FORMAT,
                     filemode="w")
 
 # Application logger

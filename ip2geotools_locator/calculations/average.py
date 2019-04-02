@@ -1,7 +1,6 @@
 """Module for calculating estimate of average location"""
 from ip2geotools_locator.utils import Location, LOGGER as logger
 
-# pylint: disable=too-few-public-methods
 class Average():
     """
     Class for calculating Average location from list of Locations

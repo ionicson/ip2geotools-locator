@@ -1,7 +1,6 @@
 """Module for calculating estimate of median location"""
 from ip2geotools_locator.utils import Location, LOGGER as logger
 
-# pylint: disable=too-few-public-methods
 class Median():
     """
     Class for calculating Median from list of Locations

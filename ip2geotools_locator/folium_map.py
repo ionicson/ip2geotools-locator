@@ -13,7 +13,6 @@ class FoliumMap:
     FORMATTED_STRING = """
     <b>IP: %s</b><p>Country: %s</p><p>Region: %s</p><p>City: %s</p><p>Location: %.3f N, %.3f E</p>
     """
-    # pylint: disable=too-many-arguments
     @classmethod
     def add_marker_noncommercial(cls, name, ip_address, country, region, city, latit, longit):
         """This method creates marker for noncommercial database"""
@@ -32,7 +31,6 @@ class FoliumMap:
             logger.warning("%s: TypeError: %s. Marker from %s DB skipped.", __name__,
                            str(exception), name)
 
-    # pylint: disable=too-many-arguments
     @classmethod
     def add_marker_commercial(cls, name, ip_address, country, region, city, latit, longit):
         """This method creates marker for commercial database"""

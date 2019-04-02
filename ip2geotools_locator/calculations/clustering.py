@@ -10,7 +10,6 @@ class Clustering():
     """
     Class for calculating Cluster centroid from list of Locations
     """
-    # pylint: disable=too-few-public-methods, invalid-name, too-many-locals
     @staticmethod
     def calculate(locations=None):
         """
@@ -28,7 +27,7 @@ class Clustering():
         clustered_data = [[]]
         clusters_inertia_list = []
         __iteration = 0
-
+        
         for loc in locations:
             # Locations divided into latitude longitude lists
             try:

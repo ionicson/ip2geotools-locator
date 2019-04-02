@@ -1,12 +1,18 @@
 =======
 History
 =======
+1.4.1 (2019-03-17)
+------------------
+* Pylint file created
+* Hotfix of Clustering method
+
 1.4.0 (2019-03-17)
 ------------------
 * Logging refactor
 * None values excluded
 * CLI Changed
 * Errors fixed
+* Stable Version
 
 1.3.0 (2019-03-04)
 ------------------

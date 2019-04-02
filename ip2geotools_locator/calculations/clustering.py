@@ -27,7 +27,7 @@ class Clustering():
         clustered_data = [[]]
         clusters_inertia_list = []
         __iteration = 0
-        
+
         for loc in locations:
             # Locations divided into latitude longitude lists
             try:

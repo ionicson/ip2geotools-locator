@@ -10,7 +10,6 @@ class Clustering():
     """
     Class for calculating Cluster centroid from list of Locations
     """
-    # pylint: disable=too-few-public-methods, invalid-name, too-many-locals
     @staticmethod
     def calculate(locations=None):
         """

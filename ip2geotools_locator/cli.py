@@ -24,7 +24,6 @@ LOCATOR = Locator()
 @click.option('--logs/--no-logs', default=False)
 @click.option('-v', '--verbose', count=True)
 
-# pylint: disable=too-many-arguments, too-many-branches, too-many-locals, line-too-long
 def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commercial, noncommercial,
         database):
     """Calculate estimate of geographical location for IP address"""
@@ -32,7 +31,7 @@ def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commerc
     stream_handler = logging.StreamHandler()
 
     octets = ip_address.split(".")
-    # pylint: disable=literal-comparison
+
     if len(octets) is not 4:
         click.echo("IP address is not valid!\nProvided IP address does not have four octets.")
         exit(1)
@@ -77,7 +76,6 @@ def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commerc
     LOCATOR.generate_map = gen_map
     LOCATOR.get_locations(ip_address, databases)
 
-    # pylint: disable=len-as-condition
     if len(LOCATOR.locations) == 0:
         click.echo("\n No record for IP address %s in selected databases." % ip_address)
         exit(0)

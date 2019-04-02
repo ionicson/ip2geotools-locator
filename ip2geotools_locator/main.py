@@ -35,7 +35,7 @@ class Locator:
         """
         logger.info("Reading settings.json file")
 
-        # Should application generate Folium map file? (Default false)
+        # Should application generate Folium map file? (Default true)
         self.generate_map = generate_map
 
         # Read settings.json
@@ -53,8 +53,7 @@ class Locator:
 
         logger.debug("Settings parsed for commercial and noncommercial databases.")
 
-    # pylint: disable=line-too-long, too-many-locals
-    # pylint: disable=too-many-statements, too-many-branches
+
     def get_locations(self, ip_address, databases=None):
         """
         Method which searches through selected databases for location of given IP address.
@@ -248,9 +247,9 @@ class Locator:
         f_map = FoliumMap()
 
         # No calculation if databases did not rethrieved data
-        #pylint: disable=len-as-condition
-        if len(self.locations) == 0:
+        if len(self.locations) < 2:
             return None
+
         # Calculate average of locations (default method)
         if average:
             logger.debug(

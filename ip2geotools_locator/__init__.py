@@ -15,5 +15,5 @@ NAME = "ip2geotools-locator"
 
 LOGGER = logging.getLogger()
 LOGGER.info("###############################################")
-LOGGER.info("######### Ip2Geotools-Locator v 1.4.0 #########")
+LOGGER.info("######### Ip2Geotools-Locator v 1.4.1 #########")
 LOGGER.info("###############################################")

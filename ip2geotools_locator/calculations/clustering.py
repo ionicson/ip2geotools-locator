@@ -53,10 +53,13 @@ class Clustering():
             sum_of_squared_distances.append(kmeans_model.inertia_)
             calculated_kmeans_models.append(kmeans_model)
 
-        knee_func = KneeLocator(K, sum_of_squared_distances, curve='convex', direction='decreasing')
+        try:
+            knee_func = KneeLocator(K, sum_of_squared_distances)
 
-        # Sellecting fittest KMeans algorithm model
-        final_kmeans_model = calculated_kmeans_models[knee_func.knee - 1]
+            # Sellecting fittest KMeans algorithm model
+            final_kmeans_model = calculated_kmeans_models[knee_func.knee - 1]
+        except (TypeError, ValueError):
+            final_kmeans_model = calculated_kmeans_models[0]
 
         # Divide data into separate clusters
         for index, label in enumerate(final_kmeans_model.labels_):

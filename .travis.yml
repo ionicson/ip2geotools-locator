@@ -12,9 +12,8 @@ install:
 
 # Command to run tests, e.g. python setup.py test
 script:
-  - pipenv shell
-  - python setup.py test
-  - pylint ip2geotools_locator
+  - pipenv run python setup.py test
+  - setup.py test pylint ip2geotools_locator
   - pipenv check
 
 deploy:

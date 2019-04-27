@@ -7,8 +7,6 @@ import click
 from ip2geotools_locator import Locator
 from ip2geotools_locator.utils import LOGGER as logger
 
-LOCATOR = Locator()
-
 @click.command()
 @click.argument('ip_address', type=click.STRING)
 
@@ -24,9 +22,9 @@ LOCATOR = Locator()
 @click.option('--logs/--no-logs', default=False)
 @click.option('-v', '--verbose', count=True)
 
-def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commercial, noncommercial,
-        database):
+def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commercial, noncommercial, database):
     """Calculate estimate of geographical location for IP address"""
+    LOCATOR = Locator(gen_map)
     databases = []
     stream_handler = logging.StreamHandler()
 
@@ -40,7 +38,6 @@ def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commerc
         if int_octet not in range(0, 256):
             click.echo("IP address is not valid!\n%i octet value must be between 0 and 255" % index)
             exit(1)
-
 
     if logs is False:
         logger.disabled = True
@@ -73,8 +70,8 @@ def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commerc
 
     else:
         databases = list(database)
-    LOCATOR.generate_map = gen_map
-    LOCATOR.get_locations(ip_address, databases)
+
+    LOCATOR.fetch_locations(ip_address)
 
     if len(LOCATOR.locations) == 0:
         click.echo("\n No record for IP address %s in selected databases." % ip_address)
@@ -82,15 +79,13 @@ def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commerc
 
     if (average is False and clustering is False and median is False):
         print("\n")
-        for location in LOCATOR.locations:
-            click.echo("Location retrieved from %s database is: %s N, %s E"
-                       %(location, str(LOCATOR.locations[location].latitude),
-                         str(LOCATOR.locations[location].longitude)))
+        locations = LOCATOR.get_locations()
+        for location in locations:
+            click.echo("Location data from %s database - Latitude: %.3f, Longitude %.3f, Country: %s, Region: %s, City: %s" % (location, locations[location].latitude, locations[location].longitude,
+                                                                                                                               locations[location].country, locations[location].region,
+                                                                                                                               locations[location].city))
     else:
-        calculated_locations = LOCATOR.calculate(average=average, clustering=clustering,
-                                                 median=median)
+        calculated_locations = LOCATOR.calculate(average=average, clustering=clustering, median=median)
         print("\n")
         for calc_loc in calculated_locations:
-            click.echo("Location estimated by %s is: %f N, %f E" %
-                       (calc_loc, calculated_locations[calc_loc].latitude,
-                        calculated_locations[calc_loc].longitude))
+            click.echo("Location estimated by %s calculation method is: %f N, %f E" % (calc_loc, calculated_locations[calc_loc].latitude, calculated_locations[calc_loc].longitude))

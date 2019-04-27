@@ -10,10 +10,10 @@ from ip2geotools_locator.main import Locator
 
 __author__ = """Oldřich Klíma"""
 __email__ = 'xklima27@vutbr.cz'
-__version__ = '1.4.4'
+__version__ = '1.5.0'
 NAME = "ip2geotools-locator"
 
 LOGGER = logging.getLogger()
 LOGGER.info("###############################################")
-LOGGER.info("######### Ip2Geotools-Locator v 1.4.4 #########")
+LOGGER.info("######### Ip2Geotools-Locator v 1.5.0 #########")
 LOGGER.info("###############################################")

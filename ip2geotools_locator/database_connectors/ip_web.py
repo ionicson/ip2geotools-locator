@@ -1,11 +1,11 @@
 """Module for connecting to web interfce of DbIp DB"""
 from ip2geotools.databases.commercial import DbIpWeb
-from ip2geotools.errors import (LocationError, IpAddressNotFoundError, PermissionRequiredError,
-                                InvalidRequestError, InvalidResponseError, ServiceError,
-                                LimitExceededError)
-
+from ip2geotools.errors import (InvalidRequestError, InvalidResponseError,
+                                IpAddressNotFoundError, LimitExceededError,
+                                LocationError, PermissionRequiredError,
+                                ServiceError)
 from ip2geotools_locator.folium_map import FoliumMap
-from ip2geotools_locator.utils import Location, LOGGER as logger
+from ip2geotools_locator.utils import LOGGER as logger
 
 
 class IpWebDB:
@@ -14,7 +14,7 @@ class IpWebDB:
     """
     # instance of map for placing markers
     m = FoliumMap()
-    __db_data = None
+    db_data = None
 
     def __init__(self):
         pass
@@ -26,24 +26,24 @@ class IpWebDB:
         """
         try:
             # Try to get and return location
-            self.__db_data = DbIpWeb.get(ip_address)
-            if self.__db_data.latitude is None or self.__db_data.longitude is None:
+            self.db_data = DbIpWeb.get(ip_address)
+
+            if self.db_data.latitude is None or self.db_data.longitude is None:
                 raise InvalidResponseError
-            if self.__db_data.latitude == 0 or self.__db_data.longitude == 0:
+
+            if self.db_data.latitude == 0 or self.db_data.longitude == 0:
                 raise InvalidResponseError
-            logger.info("DB returned location %.3f N, %.3f E", self.__db_data.latitude,
-                        self.__db_data.longitude)
-            return Location(self.__db_data.latitude, self.__db_data.longitude)
+
+            logger.info("DB returned location %.3f N, %.3f E", self.db_data.latitude, self.db_data.longitude)
+            return self.db_data
 
         except IpAddressNotFoundError as exception:
             # Handling for IpAddressNotFoundError exception
-            logger.warning("Database could not find IP address. IpAddressNotFoundError: %s ",
-                           str(exception))
+            logger.warning("Database could not find IP address. IpAddressNotFoundError: %s ", str(exception))
 
         except PermissionRequiredError as exception:
             # Handling for PermissionRequiredError exception
-            logger.critical("Additional setings required for DB. PermissionRequiredError: %s ",
-                            str(exception))
+            logger.critical("Additional setings required for DB. PermissionRequiredError: %s ", str(exception))
 
         except ServiceError as exception:
             # Handling for ServiceError exception
@@ -51,30 +51,20 @@ class IpWebDB:
 
         except LimitExceededError as exception:
             # Handling for LimitExceededError exception
-            logger.warning("LimitExceededError: %s ", str(exception))
+            logger.warning("Database Eurek has exceeded number of requests! LimitExceededError")
 
         except (LocationError, InvalidRequestError, InvalidResponseError) as exception:
             # Handling for invalid data, request and response exception
-            logger.error("Database DbIpWeb returned %s ", str(exception.__class__))
+            logger.error("Database Eurek returned %s ", str(exception.__class__))
 
-        except TypeError as exception:
-            # Handling for TypeError exception (in case of database returning None values)
-            logger.warning("DB returned invalid values. TypeError: %s ", str(exception))
 
     def add_to_map(self):
         """
-        Add Folium Marker to map
-        Call get_location(ip) method before adding any markers to map
+        Add Folium Marker to map. Call get_location(ip) method before adding any markers to map!
         """
-        try:
-            logger.debug("Calling add_marker method for %s DB", DbIpWeb.__name__)
-            self.m.add_marker_commercial(DbIpWeb.__name__,
-                                         self.__db_data.ip_address,
-                                         self.__db_data.country,
-                                         self.__db_data.region,
-                                         self.__db_data.city,
-                                         self.__db_data.latitude,
-                                         self.__db_data.longitude)
-        except AttributeError as exception:
-            # Handling for AttributeError exception (in case of database returning None values)
-            logger.warning("Cannot add empty marker %s ", str(exception))
+
+        logger.debug("Calling add_marker method for %s DB", DbIpWeb.__name__)
+        if self.db_data is not None:
+            self.m.add_marker(DbIpWeb.__name__, self.db_data, True)
+        else:
+            logger.warning("Cannot add empty marker db %s", DbIpWeb.__name__)

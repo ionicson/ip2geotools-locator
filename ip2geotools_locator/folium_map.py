@@ -52,7 +52,7 @@ class FoliumMap:
                 # Calculate distance between coordinates
                 dist = distance.distance([locations[loc].latitude, locations[loc].longitude], calculated_locations[calc_loc]).km
                 # Add Folium PolyLine
-                cls.poly_lines.append(folium.PolyLine([[locations[loc].latitude, locations[loc].longitude] , calculated_locations[calc_loc]], tooltip="Distance: %.3f km" % dist, weight=3, opacity=1))
+                cls.poly_lines.append(folium.PolyLine([[locations[loc].latitude, locations[loc].longitude], calculated_locations[calc_loc]], tooltip="Distance: %.3f km" % dist, weight=3, opacity=1))
 
 
     @classmethod

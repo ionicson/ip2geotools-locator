@@ -24,7 +24,7 @@ from ip2geotools_locator.utils import LOGGER as logger
 
 def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commercial, noncommercial, database):
     """Calculate estimate of geographical location for IP address"""
-    LOCATOR = Locator(gen_map)
+    locator = Locator(gen_map)
     databases = []
     stream_handler = logging.StreamHandler()
 
@@ -71,21 +71,21 @@ def cmd(logs, verbose, ip_address, gen_map, average, clustering, median, commerc
     else:
         databases = list(database)
 
-    LOCATOR.fetch_locations(ip_address)
+    locator.fetch_locations(ip_address)
 
-    if len(LOCATOR.locations) == 0:
+    if len(locator.locations) == 0:
         click.echo("\n No record for IP address %s in selected databases." % ip_address)
         exit(0)
 
     if (average is False and clustering is False and median is False):
         print("\n")
-        locations = LOCATOR.get_locations()
+        locations = locator.get_locations()
         for location in locations:
             click.echo("Location data from %s database - Latitude: %.3f, Longitude %.3f, Country: %s, Region: %s, City: %s" % (location, locations[location].latitude, locations[location].longitude,
                                                                                                                                locations[location].country, locations[location].region,
                                                                                                                                locations[location].city))
     else:
-        calculated_locations = LOCATOR.calculate(average=average, clustering=clustering, median=median)
+        calculated_locations = locator.calculate(average=average, clustering=clustering, median=median)
         print("\n")
         for calc_loc in calculated_locations:
             click.echo("Location estimated by %s calculation method is: %f N, %f E" % (calc_loc, calculated_locations[calc_loc].latitude, calculated_locations[calc_loc].longitude))

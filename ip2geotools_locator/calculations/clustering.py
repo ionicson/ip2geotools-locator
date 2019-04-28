@@ -1,9 +1,10 @@
 """Module for estimating geographical location by K-Means cluster center calculation"""
 import numpy
-from sklearn.cluster import KMeans
 from kneed import KneeLocator
+from sklearn.cluster import KMeans
 
-from ip2geotools_locator.utils import Location, LOGGER as logger
+from ip2geotools_locator.utils import LOGGER as logger
+from ip2geotools_locator.utils import Location
 
 
 class Clustering():
@@ -18,66 +19,54 @@ class Clustering():
 
         Location = namedtuple('Location', 'latitude longitude')
         """
-        logger.info("Calculation of Median location started.")
+        logger.info("Calculation of location data cluster centroid started.")
         # List of latitudes and longitudes
-        __latitudes = []
-        __longitudes = []
+        latitudes = []
+        longitudes = []
         sum_of_squared_distances = []
         calculated_kmeans_models = []
-        clustered_data = [[]]
-        clusters_inertia_list = []
-        __iteration = 0
+        iteration = 0
 
         for loc in locations:
             # Locations divided into latitude longitude lists
             try:
-                __latitudes.append(locations[loc].latitude)
-                __longitudes.append(locations[loc].longitude)
-                __iteration += 1
+                latitudes.append(locations[loc].latitude)
+                longitudes.append(locations[loc].longitude)
+                iteration += 1
 
-                logger.debug("separation of latitudes and longitudes. %i iteration.",
-                             __iteration)
+                logger.debug("Separation of latitudes and longitudes. %i iteration.", iteration)
 
             except AttributeError as exception:
                 # None values from database are skipped
-                logger.warning("value excluded from iterration. AttributeError: %s",
-                               str(exception))
-
+                logger.warning("Value excluded from iterration. AttributeError: %s", str(exception))
+        if len(locations) < 3:
+            logger.warning("Not enough location data for using this method. At least 3 entries are needed.")
+            return None
         # Data transformation into numpy array
-        X = numpy.array(list(zip(__latitudes, __longitudes))).reshape(len(__latitudes), 2)
+        X = numpy.array(list(zip(latitudes, longitudes))).reshape(len(latitudes), 2)
 
         # Estimating ideal K from elbow function
-        K = range(1, __iteration)
+        K = range(1, iteration)
         for k in K:
             kmeans_model = (KMeans(n_clusters=k).fit(X))
             sum_of_squared_distances.append(kmeans_model.inertia_)
             calculated_kmeans_models.append(kmeans_model)
 
-        knee_func = KneeLocator(K, sum_of_squared_distances, curve='convex', direction='decreasing')
+            logger.debug("Calculating K-Means model for K = %i", k)
 
-        # Sellecting fittest KMeans algorithm model
-        final_kmeans_model = calculated_kmeans_models[knee_func.knee - 1]
+        try:
+            knee_func = KneeLocator(K, sum_of_squared_distances, curve='convex', direction='decreasing')
 
-        # Divide data into separate clusters
-        for index, label in enumerate(final_kmeans_model.labels_):
+            # Sellecting fittest KMeans algorithm model
+            final_kmeans_model = calculated_kmeans_models[knee_func.knee - 1]
+            logger.debug("Finding local extremes of knee function. K = %i,", knee_func.knee)
 
-            # Adds new array for each new label
-            if label + 1 > len(clustered_data):
-                clustered_data.append([])
+        except (TypeError, ValueError):
+            final_kmeans_model = calculated_kmeans_models[0]
+            logger.warning("No extremes found in K-Means optimalization. Calculating for K = 1. Result will be silmilar to Average.")
 
-            # Parse data into list
-            clustered_data[label].append(X[index])
-
-        # Calculates inertia for each cluster with K = 1
-        for cluster in clustered_data:
-            kmeans_model = (KMeans(n_clusters=1).fit(cluster))
-            clusters_inertia_list.append(kmeans_model.inertia_)
-
-        # Best data cluster has minimal inertia value
-        index_of_fittest_cluster = clusters_inertia_list.index(min(clusters_inertia_list))
-
-        # Extracts all cluster centers from array and convert to list
         center_locations = numpy.array(final_kmeans_model.cluster_centers_).tolist()
 
-        return Location(round(center_locations[index_of_fittest_cluster][0], 4),
-                        round(center_locations[index_of_fittest_cluster][1], 4))
+        # Return calculated location. Biggest cluster has always index 0
+        logger.info("Calculated Median location form %i DB responses is: %.3f N, %.3f", iteration, center_locations[0][0], center_locations[0][1])
+        return Location(round(center_locations[0][0], 4), round(center_locations[0][1], 4))

@@ -25,8 +25,6 @@ class Clustering():
         longitudes = []
         sum_of_squared_distances = []
         calculated_kmeans_models = []
-        clustered_data = [[]]
-        clusters_inertia_list = []
         iteration = 0
 
         for loc in locations:
@@ -54,15 +52,15 @@ class Clustering():
             sum_of_squared_distances.append(kmeans_model.inertia_)
             calculated_kmeans_models.append(kmeans_model)
 
-            logger.debug("Calculating K-Means model for K = %i" % k)
+            logger.debug("Calculating K-Means model for K = %i", k)
 
         try:
             knee_func = KneeLocator(K, sum_of_squared_distances, curve='convex', direction='decreasing')
-        
+
             # Sellecting fittest KMeans algorithm model
             final_kmeans_model = calculated_kmeans_models[knee_func.knee - 1]
-            logger.debug("Finding local extremes of knee function. K = %i," % knee_func.knee)
-            
+            logger.debug("Finding local extremes of knee function. K = %i,", knee_func.knee)
+
         except (TypeError, ValueError):
             final_kmeans_model = calculated_kmeans_models[0]
             logger.warning("No extremes found in K-Means optimalization. Calculating for K = 1. Result will be silmilar to Average.")

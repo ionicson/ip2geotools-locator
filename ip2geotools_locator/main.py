@@ -38,7 +38,7 @@ class Locator:
         # Should application generate Folium map file map_file_name.html?
         self.generate_map = generate_map
         self.map_file_name = map_file_name
-        
+
         # Read settings.json
         try:
             with open("settings.json", "r") as read_file:
@@ -47,7 +47,9 @@ class Locator:
         except FileNotFoundError:
             self.settings = json.loads(DEFAULT_SETTINGS)
             logger.info("Loading default settings.")
-            save_settings()
+            with open("settings.json", "w") as write_file:
+                json.dump(self.settings, write_file, indent=4, sort_keys=True)
+                logger.info("Settings are saved into settings.json file.")
 
         logger.debug("Settings parsed for commercial and noncommercial databases.")
 
@@ -63,7 +65,7 @@ class Locator:
         self.ip_address = ip_address
         commercial_db_settings = self.settings["commercial"]
         noncommercial_db_settings = self.settings["noncommercial"]
-        
+
         logger.info("Gathering location records for IP address %s.", ip_address)
 
         # Noncommercial databases
@@ -214,7 +216,7 @@ class Locator:
         and Median. For multiple selected methods returns namedtuple list:
         (Location.latitude, location.longitude).
         """
-        logger.debug("Calculation started for %i DB entries." % len(self.locations))
+        logger.debug("Calculation started for %i DB entries.", len(self.locations))
         calculated_locations = {}
         f_map = FoliumMap()
 
@@ -281,5 +283,5 @@ class Locator:
     def save_settings(self):
         """Method returns loaded configuration in from of dictionary."""
         with open("settings.json", "w") as write_file:
-                json.dump(settings, write_file, indent=4, sort_keys=True)
-                logger.info("Settings are saved into settings.json file.")
+            json.dump(self.settings, write_file, indent=4, sort_keys=True)
+            logger.info("Settings are saved into settings.json file.")

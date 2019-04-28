@@ -338,9 +338,6 @@ single-line-if-stmt=no
 
 [LOGGING]
 
-# Format style used to check logging format string
-logging-format-style=%%
-
 # Logging modules to check that the string format arguments are in logging
 # function parameter format.
 logging-modules=logging

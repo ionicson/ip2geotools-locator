@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-pylint = "<=2.2.0"
+pylint = "*"
 ip2geotools-locator = {editable = true,path = "."}
 
 [packages]
